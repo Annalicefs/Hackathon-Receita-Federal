@@ -98,7 +98,12 @@ class InstituicaoCriarSerializer(serializers.ModelSerializer):
         model = Instituicao
         fields = [
             'nome_instituicao', 'cnpj', 'endereco',
-            'telefone', 'email_contato', 'area_atuacao'
+            'telefone', 'email_contato', 'area_atuacao',
+            'assinatura_solicitante_pdf',
+            'estatuto_registrado_pdf',
+            'ata_eleicao_dirigente_pdf',
+            'comprovante_endereco_entidade_pdf',
+            'declaracao_regularidade_conformidade_pdf'
         ]
 
 class ItemRequisicaoSerializer(serializers.ModelSerializer):

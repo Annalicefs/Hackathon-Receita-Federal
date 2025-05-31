@@ -117,13 +117,14 @@ class HistoricoEstoque(models.Model):
         db_table = 'HISTORICO_ESTOQUE'
 
 class Instituicao(models.Model):
-    id_usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, unique=True) # 1:1 com Usuario
+    id_usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, unique=True) 
     nome_instituicao = models.CharField(max_length=255, unique=True)
-    cnpj = models.CharField(max_length=18, unique=True) # Idealmente, adicione validadores para CNPJ
+    cnpj = models.CharField(max_length=18, unique=True) 
     endereco = models.CharField(max_length=255)
     telefone = models.CharField(max_length=20, blank=True, null=True)
     email_contato = models.EmailField(blank=True, null=True)
     area_atuacao = models.TextField()
+
     STATUS_CHOICES = (
         ('Pendente', 'Pendente'),
         ('Aprovado', 'Aprovado'),
@@ -133,6 +134,38 @@ class Instituicao(models.Model):
     data_solicitacao = models.DateTimeField(auto_now_add=True)
     data_aprovacao = models.DateTimeField(null=True, blank=True)
     id_usuario_aprovador = models.ForeignKey(Usuario, on_delete=models.PROTECT, null=True, blank=True, related_name='instituicoes_aprovadas')
+
+     #CAMPOS DE arquivo como input
+    assinatura_solicitante_pdf = models.FileField(
+        upload_to='instituicoes/assinaturas/',
+        blank=True,
+        null=True,
+        verbose_name="Assinatura do Solicitante (PDF)"
+    )
+    estatuto_registrado_pdf = models.FileField(
+        upload_to='instituicoes/estatutos/',
+        blank=True,
+        null=True,
+        verbose_name="Estatuto Registrado e Alterações (PDF)"
+    )
+    ata_eleicao_dirigente_pdf = models.FileField(
+        upload_to='instituicoes/atas_eleicao/',
+        blank=True,
+        null=True,
+        verbose_name="Ata de Eleição do Quadro Dirigente (PDF)"
+    )
+    comprovante_endereco_entidade_pdf = models.FileField(
+        upload_to='instituicoes/comprovantes_endereco/',
+        blank=True,
+        null=True,
+        verbose_name="Comprovante de Endereço da Entidade (PDF)"
+    )
+    declaracao_regularidade_conformidade_pdf = models.FileField(
+        upload_to='instituicoes/declaracoes_regularidade/',
+        blank=True,
+        null=True,
+        verbose_name="Declaração de Regularidade e Conformidade (PDF)"
+    )
 
     class Meta:
         db_table = 'INSTITUICOES'

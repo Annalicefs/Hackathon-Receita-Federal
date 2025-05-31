@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from datetime import timedelta 
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,10 +39,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
     'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -87,7 +90,7 @@ WSGI_APPLICATION = 'core_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hackathon_receita.db',
+        'NAME': 'hackathon_receita',
         'USER': 'root',
         'PASSWORD': 'Anaellen.1',
         'HOST': 'localhost',   # ou o host do seu DB
@@ -163,3 +166,11 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,                 
     'BLACKLIST_AFTER_ROTATION': True,             
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173", 
+    "http://127.0.0.1:5173",
+]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

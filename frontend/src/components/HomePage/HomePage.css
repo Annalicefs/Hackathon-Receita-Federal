@@ -1,0 +1,76 @@
+.home-container {
+  background-color: #0A2647; /* Azul escuro do fundo */
+  color: #EAF2F8;          /* Cor clara para o texto */
+  min-height: calc(100vh - 60px); /* Altura da viewport menos a altura do header */
+  width: 100vw;            /* Ocupa 100% da largura da viewport */
+  margin: 0;
+  padding: 20px;           /* Padding interno da página */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+/* Estilos para o conteúdo principal centralizado */
+.home-main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+/* Estilos para o logo central grande */
+.home-central-logo {
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+/* Estilos para o título principal "Reaproveitamento..." */
+.home-title {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+/* Estilos para o botão "Entrar" */
+.home-button {
+  background-color: #394867;
+  color: #EAF2F8;
+  padding: 12px 30px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+/* Efeito hover para o botão */
+.home-button:hover {
+  background-color: #2F3F5B; /* Um tom ligeiramente mais escuro ao passar o mouse */
+}
+
+/* Estilos para o link "Cadastre-se" */
+.home-link {
+  color: #9BA4B5;
+  text-decoration: none;
+  font-size: 1em;
+  transition: color 0.3s ease;
+}
+
+/* Efeito hover para o link */
+.home-link:hover {
+  color: #B0BACC; /* Um tom ligeiramente mais claro ao passar o mouse */
+}
+
+/* Estilo para o texto "Receita Federal" abaixo do logo central */
+.home-rf-text {
+    font-size: 2em;
+    margin-bottom: 10px;
+    font-weight: normal; /* Para replicar a imagem */
+}

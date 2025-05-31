@@ -1,0 +1,101 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura/altura */
+}
+
+/* Estilos para o corpo da aplicação (fundo padrão, fonte) */
+body {
+  font-family: 'Arial', sans-serif; /* Fonte padrão do app */
+  line-height: 1.6; /* Altura da linha padrão */
+  background-color: #F0F2F5; /* Cor de fundo geral para o corpo do app (um cinza claro, se não for azul) */
+  color: #333; /* Cor de texto padrão */
+}
+
+/* Estilo para o elemento raiz do React, que ocupa toda a tela */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Por padrão, não terá largura máxima ou margens para permitir layouts de tela cheia */
+}
+
+/* Estilos de link globais (se aplicável) */
+a {
+  text-decoration: none;
+  color: inherit; /* Links herdam a cor do texto pai por padrão */
+}
+
+/* Você pode importar fontes aqui */
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); */
+
+
+/*:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+  */

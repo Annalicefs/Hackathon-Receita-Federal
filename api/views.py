@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .models import (
     Usuario, Vape, Componente, VapeComponente, EstoqueComponente,
@@ -164,9 +165,7 @@ class InstituicaoViewSet(viewsets.ModelViewSet):
         return InstituicaoSerializer
 
     def get_permissions(self):
-        if self.action == 'create': # Solicitar cadastro de instituição
-            # Permite que qualquer usuário autenticado com tipo 'Publico' crie uma solicitação
-            # A verificação se já existe uma instituição para o usuário é feita no perform_create
+        if self.action == 'create':  #APENAS PRA TESTE
             permission_classes = [IsAuthenticated]
         elif self.action in ['aprovar', 'rejeitar', 'destroy'] or (self.action == 'update' and self.request.user.tipo_usuario == 'Receita Federal'): # Gerenciamento pela Receita
             permission_classes = [IsAuthenticated, IsReceitaFederal]
