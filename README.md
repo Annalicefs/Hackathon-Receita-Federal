@@ -80,22 +80,18 @@ Siga os passos abaixo para configurar e rodar o projeto localmente:
     ```
 
 3.  **Instale as dependências:**
-    Crie um arquivo `requirements.txt` (se ainda não existir) com as dependências:
-    ```bash
-    pip freeze > requirements.txt
-    ```
-    E então instale:
+    Instale:
     ```bash
     pip install -r requirements.txt
     ```
-    As dependências principais são: `django`, `djangorestframework`, `djangorestframework-simplejwt`, `mysqlclient` (se for usar MySQL).
+    As dependências principais são: `django`, `djangorestframework`, `djangorestframework-simplejwt`, `mysqlclient`
 
 4.  **Configure as Variáveis de Ambiente e o `settings.py`:**
     * **Chave Secreta:** Abra o arquivo `core_project/settings.py` e defina uma `SECRET_KEY` segura.
         ```python
         SECRET_KEY = 'sua-chave-secreta-super-forte-aqui!'
         ```
-    * **Banco de Dados:** Configure a seção `DATABASES` em `core_project/settings.py` para o seu banco de dados (MySQL ou outro). O padrão está configurado para SQLite (`db.sqlite3`) para facilitar o início.
+    * **Banco de Dados:** Configure a seção `DATABASES` em `core_project/settings.py` para o seu banco de dados (MySQL ou outro). O padrão está configurado para SQLite (`db.sqlite3`) para facilitar o início. Crie seu banco de dados utilizando o script 'banco-de-dados.sql'.
 
 5.  **Aplique as migrações do banco de dados:**
     ```bash
