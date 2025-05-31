@@ -91,7 +91,7 @@ Siga os passos abaixo para configurar e rodar o projeto localmente:
         ```python
         SECRET_KEY = 'sua-chave-secreta-super-forte-aqui!'
         ```
-    * **Banco de Dados:** Configure a seção `DATABASES` em `core_project/settings.py` para o seu banco de dados (MySQL ou outro). O padrão está configurado para SQLite (`db.sqlite3`) para facilitar o início. Crie seu banco de dados utilizando o script 'banco-de-dados.sql'.
+    * **Banco de Dados:** Configure a seção `DATABASES` em `core_project/settings.py` para o seu banco de dados (MySQL ou outro). O padrão está configurado para SQLite (`db.sqlite3`) para facilitar o início. Crie seu banco de dados utilizando o script banco-de-dados.sql.
 
 5.  **Aplique as migrações do banco de dados:**
     ```bash
