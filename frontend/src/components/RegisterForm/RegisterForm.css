@@ -1,0 +1,98 @@
+/* frontend/src/components/RegisterForm/RegisterForm.css */
+
+.register-form-container {
+  max-width: 400px;
+  margin: 50px auto; /* Centraliza o formulário */
+  padding: 30px;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Sombra suave */
+  box-sizing: border-box; /* Inclui padding na largura */
+}
+
+.register-form-container h2 {
+  text-align: center;
+  color: #0A2647; /* Azul escuro */
+  margin-bottom: 25px;
+  font-size: 1.8em;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+  font-size: 0.95em;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.submit-button {
+  background-color: #007bff; /* Azul padrão para botão de registro */
+  color: white;
+  padding: 12px 25px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3; /* Tom mais escuro no hover */
+}
+
+.login-link-text {
+  margin-top: 20px;
+  text-align: center;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.login-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+/* Mensagens de feedback */
+.message-success {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #d4edda; /* Verde claro */
+  color: #155724; /* Verde escuro */
+  border: 1px solid #c3e6cb;
+}
+
+.message-error {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #f8d7da; /* Vermelho claro */
+  color: #721c24; /* Vermelho escuro */
+  border: 1px solid #f5c6cb;
+}
