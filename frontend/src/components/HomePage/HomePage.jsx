@@ -1,7 +1,6 @@
-// frontend/src/components/HomePage.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logoReceitaFederal from '../../assets/logo_receita_federal_branca.png'; // Importe a logo branca
+import logoReceitaFederal from '../../assets/logo_receita_federal_branca.png'; 
 import './HomePage.css';
 
 function HomePage() {

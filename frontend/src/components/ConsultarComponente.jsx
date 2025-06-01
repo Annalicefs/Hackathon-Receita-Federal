@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../services/auth';
+import { useNavigate } from 'react-router-dom';
 
 const ConsultarComponente = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    tipo: '',
-    modelo: '',
-    fabricante: ''
+   const [formData, setFormData] = useState({
+    name: '',      
+    tipo: '',      
+    modelo: '',     
+    fabricante: '', 
   });
+
+  const [message, setMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Este log vai mostrar o valor atual do formData após cada atualização
+    console.log('DEBUG ESTADO: formData ATUALIZADO para:', { 
+      name: formData.name, 
+      tipo: formData.tipo, 
+      modelo: formData.modelo, 
+      fabricante: formData.fabricante, 
+      unidadeMedida: formData.unidadeMedida 
+    });
+  }, [formData]);  
 
   // Dados para os dropdowns
   const nomes = ['LED', 'Bateria', 'Sensor', 'Atomizador'];
@@ -18,12 +36,90 @@ const ConsultarComponente = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-
-  const handleSubmit = (e) => {
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Dados enviados:', formData);
-    // Lógica para enviar os dados para o backend
+
+    console.log('DEBUG HANDLER: Dados do formData no momento da busca:', { 
+      name: formData.name, 
+      tipo: formData.tipo, 
+      modelo: formData.modelo, 
+      fabricante: formData.fabricante, 
+      unidadeMedida: formData.unidadeMedida 
+    });  
+
+    setMessage('Consultando componentes...');
+    setIsSuccess(true); 
+
+    try {
+      const queryParams = {};
+      if (formData.name) queryParams.nome_componente = formData.name;
+      if (formData.tipo) queryParams.tipo_do_componente = formData.tipo; 
+      if (formData.modelo) queryParams.modelo_do_componente = formData.modelo; 
+      if (formData.fabricante) queryParams.fabricante_do_componente = formData.fabricante;
+
+      console.log('Critérios de consulta para o backend (queryParams):', queryParams);
+
+      const response = await api.get('/componentes/', { params: queryParams });
+      const dadosComponentes = response.data; 
+
+      console.log('DEBUG HANDLER: Resposta completa da API:', response);
+      console.log('DEBUG HANDLER: dadosComponentes (objeto paginado):', dadosComponentes);
+      console.log('DEBUG HANDLER: dadosComponentes.results (array de componentes):', dadosComponentes.results);
+
+
+       const termoBuscaUtilizado = formData.name || formData.tipo || formData.modelo || formData.fabricante || formData.unidadeMedida || 'componentes';
+      navigate('/chamada-para-acao', { 
+        state: { 
+          componentesEncontrados: dadosComponentes.results || [], 
+          termoBusca: termoBuscaUtilizado 
+        } 
+      });
+      
+      setFormData({ name: '', tipo: '', modelo: '', fabricante: '', unidadeMedida: '' }); 
+      setMessage(''); 
+      setIsSuccess(true); 
+
+    } catch (error) {
+      console.error('Erro ao consultar componentes:', error.response?.data || error.message || error);
+      let errorMessage = 'Erro ao realizar a consulta. ';
+      
+      if (error.response) { 
+        if (error.response.status === 403) {
+          errorMessage = "Você não tem permissão para consultar componentes.";
+        } else if (error.response.status === 401) {
+          errorMessage = "Sua sessão expirou ou você não está autenticado. Por favor, faça login novamente.";
+        } else if (error.response.data) {
+          if (typeof error.response.data === 'string') {
+            errorMessage = error.response.data;
+          } else if (error.response.data.detail) {
+            errorMessage = error.response.data.detail;
+          } else if (error.response.data.non_field_errors) {
+            errorMessage += `Erros gerais: ${error.response.data.non_field_errors.join(', ')}. `;
+          } else {
+            for (const key in error.response.data) {
+              if (error.response.data.hasOwnProperty(key)) {
+                if (Array.isArray(error.response.data[key])) {
+                  errorMessage += `${key}: ${error.response.data[key].join(', ')}. `;
+                } else {
+                  errorMessage += `${key}: ${error.response.data[key]}. `;
+                }
+              }
+            }
+          }
+        } else {
+          errorMessage = "Erro desconhecido na comunicação com o servidor.";
+        }
+      } else if (error.message) {
+        errorMessage = `Erro de rede: ${error.message}. Verifique sua conexão ou se o servidor está online.`;
+      } else {
+        errorMessage = "Ocorreu um erro inesperado.";
+      }
+      setMessage(errorMessage);
+      setIsSuccess(false);
+    }
   };
+
 
   // Estilos
   const containerStyle = {
@@ -114,14 +210,12 @@ const ConsultarComponente = () => {
 
   return (
     <div style={containerStyle}>
-      {/* Barra superior com título centralizado e largura total */}
       <div style={headerStyle}>
         <h1 style={titleStyle}>Consultar um componente</h1>
       </div>
 
       <div style={cardStyle}>
         <form onSubmit={handleSubmit}>
-          {/* Campo Name (agora dropdown) */}
           <div style={formGroupStyle}>
             <label htmlFor="name" style={labelStyle}>Name</label>
             <select
@@ -137,8 +231,7 @@ const ConsultarComponente = () => {
               ))}
             </select>
           </div>
-          
-          {/* Campo Tipo (dropdown) */}
+
           <div style={formGroupStyle}>
             <label htmlFor="tipo" style={labelStyle}>Tipo</label>
             <select
@@ -155,7 +248,6 @@ const ConsultarComponente = () => {
             </select>
           </div>
           
-          {/* Campo Modelo (dropdown) */}
           <div style={formGroupStyle}>
             <label htmlFor="modelo" style={labelStyle}>Modelo</label>
             <select
@@ -172,7 +264,6 @@ const ConsultarComponente = () => {
             </select>
           </div>
           
-          {/* Campo Fabricante (dropdown) */}
           <div style={formGroupStyle}>
             <label htmlFor="fabricante" style={labelStyle}>Fabricante</label>
             <select

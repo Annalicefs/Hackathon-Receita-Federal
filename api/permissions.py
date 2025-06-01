@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from .models import Instituicao # Necessário para a verificação em IsInstituicao
+from .models import Instituicao 
 
 class IsReceitaFederal(permissions.BasePermission):
     """
@@ -16,7 +16,6 @@ class IsInstituicao(permissions.BasePermission):
     def has_permission(self, request, view):
         if not (request.user and request.user.is_authenticated and request.user.tipo_usuario == 'Instituicao'):
             return False
-        # Verifica se o usuário da instituição está vinculado a uma instituição APROVADA
         return Instituicao.objects.filter(id_usuario=request.user, status_cadastro='Aprovado').exists()
 
 class IsPublicoOrAuthenticated(permissions.BasePermission):
@@ -28,10 +27,8 @@ class IsPublicoOrAuthenticated(permissions.BasePermission):
     Esta classe é mais para casos como "qualquer um pode ver, mas só autenticados podem interagir de outras formas".
     """
     def has_permission(self, request, view):
-        # Se for uma view pública de leitura, permite
         if request.method in permissions.SAFE_METHODS: # GET, HEAD, OPTIONS
             return True
-        # Para outros métodos, requer autenticação
         return bool(request.user and request.user.is_authenticated)
 
 
@@ -41,14 +38,11 @@ class IsOwnerInstituicaoRequisicao(permissions.BasePermission):
     Usado para object-level permission.
     """
     def has_object_permission(self, request, view, obj):
-        # Usuários da Receita Federal podem ver qualquer requisição (tratado em has_permission do viewset)
         if request.user.tipo_usuario == 'Receita Federal':
-            return True # Se já passou pelo has_permission, aqui permite
-        
-        # Para usuários de Instituição, verifica se a requisição pertence à sua instituição
+            return True
+
         if request.user.tipo_usuario == 'Instituicao':
             try:
-                # obj aqui é uma instância de Requisicao
                 instituicao_do_usuario = Instituicao.objects.get(id_usuario=request.user)
                 return obj.id_instituicao == instituicao_do_usuario
             except Instituicao.DoesNotExist:
