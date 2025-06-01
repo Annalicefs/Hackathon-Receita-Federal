@@ -1,7 +1,7 @@
 import React from 'react';
 
 const InstituicoesParceiras = () => {
-  // Dados fictícios de instituições parceiras (substitua por dados reais)
+  // Dados fictícios de instituições parceiras
   const instituicoes = [
     { id: 1, nome: "Instituto Ambiental Brasil" },
     { id: 2, nome: "Fundação Recicla Tech" },
@@ -118,23 +118,18 @@ const InstituicoesParceiras = () => {
 
   return (
     <div style={containerStyle}>
-      {/* Barra superior com título centralizado e largura total */}
       <div style={headerStyle}>
         <h1 style={titleStyle}>Instituições parceiras</h1>
       </div>
 
-      {/* Retângulo grande com bordas superiores arredondadas */}
       <div style={contentBoxStyle}>
         <p style={descriptionStyle}>
           Essas são as organizações que apoiam nosso programa de reutilização consciente de peças em cigarros eletrônicos:
         </p>
-        
-        {/* Linha minimalista */}
+
         <div style={dividerStyle}></div>
         
-        {/* Grade de instituições */}
         <div style={institutionsContainerStyle}>
-          {/* Agrupar instituições em linhas de 3 */}
           {[...Array(Math.ceil(instituicoes.length / 3))].map((_, rowIndex) => (
             <div key={rowIndex} style={institutionRowStyle}>
               {instituicoes.slice(rowIndex * 3, rowIndex * 3 + 3).map((inst) => (
@@ -154,3 +149,4 @@ const InstituicoesParceiras = () => {
 };
 
 export default InstituicoesParceiras;
+

@@ -1,11 +1,9 @@
-// frontend/src/components/InstituicaoCadastroForm/InstituicaoCadastroForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/auth';
 
 function InstituicaoCadastro() {
-  // Estados permanecem inalterados
   const [nomeInstituicao, setNomeInstituicao] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [endereco, setEndereco] = useState('');
@@ -27,8 +25,94 @@ function InstituicaoCadastro() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Lógica de submissão permanece inalterada
   };
+
+    try {
+      const formData = new FormData();
+      formData.append('nome_instituicao', nomeInstituicao);
+      formData.append('cnpj', cnpj);
+      formData.append('endereco', endereco);
+      formData.append('telefone', telefone);
+      formData.append('email_contato', emailContato);
+      formData.append('area_atuacao', areaAtuacao);
+
+      if (assinaturaPdf) formData.append('assinatura_solicitante_pdf', assinaturaPdf);
+      if (estatutoPdf) formData.append('estatuto_registrado_pdf', estatutoPdf);
+      if (ataEleicaoPdf) formData.append('ata_eleicao_dirigente_pdf', ataEleicaoPdf);
+      if (comprovanteEnderecoPdf) formData.append('comprovante_endereco_entidade_pdf', comprovanteEnderecoPdf);
+      if (declaracaoRegularidadePdf) formData.append('declaracao_regularidade_conformidade_pdf', declaracaoRegularidadePdf); 
+      
+      const response = await api.post('instituicoes/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', 
+        },
+      });
+
+      if (response.status >= 200 && response.status < 300) {
+        setMessage('Solicitação de cadastro de instituição enviada com sucesso! Aguarde aprovação.');
+        setIsSuccess(true);
+        setNomeInstituicao('');
+        setCnpj('');
+        setEndereco('');
+        setTelefone('');
+        setEmailContato('');
+        setAreaAtuacao('');
+        setAssinaturaPdf(null);
+        setEstatutoPdf(null); 
+        setAtaEleicaoPdf(null); 
+        setComprovanteEnderecoPdf(null);
+        setDeclaracaoRegularidadePdf(null);
+
+        document.getElementById('assinaturaPdf').value = null;
+        document.getElementById('estatutoPdf').value = null;
+        document.getElementById('ataEleicaoPdf').value = null;
+        document.getElementById('comprovanteEnderecoPdf').value = null;
+        document.getElementById('declaracaoRegularidadePdf').value = null;
+
+      } else {
+        setMessage('Erro desconhecido ao enviar solicitação.');
+        setIsSuccess(false);
+      }
+    } catch (error) {
+      let errorMessage = 'Erro ao enviar solicitação. ';
+      console.error('Erro ao enviar solicitação de instituição:', error.response?.data || error.message);
+      
+      if (error.response && error.response.data) {
+        if (error.response.data.nome_instituicao) {
+          errorMessage += `Nome: ${error.response.data.nome_instituicao.join(', ')}. `;
+        }
+        if (error.response.data.cnpj) {
+          errorMessage += `CNPJ: ${error.response.data.cnpj.join(', ')}. `;
+        }
+        if (error.response.data.assinatura_solicitante_pdf) {
+            errorMessage += `Assinatura: ${error.response.data.assinatura_solicitante_pdf.join(', ')}. `;
+        }
+        if (error.response.data.detail) {
+          errorMessage = error.response.data.detail; 
+        }
+        
+        if (typeof error.response.data === 'string') { 
+          errorMessage = error.response.data;
+        } else if (error.response.data.detail) { 
+            errorMessage = error.response.data.detail;
+        } else if (error.response.data.non_field_errors) { 
+            errorMessage += `Erros gerais: ${error.response.data.non_field_errors.join(', ')}. `;
+        } else {
+            for (const key in error.response.data) {
+                if (error.response.data.hasOwnProperty(key)) {
+                    if (Array.isArray(error.response.data[key])) {
+                        errorMessage += `${key}: ${error.response.data[key].join(', ')}. `;
+                    } else {
+                        errorMessage += `${key}: ${error.response.data[key]}. `; 
+                    }
+                }
+            }
+          }
+      }
+    }
+      setMessage(errorMessage);
+      setIsSuccess(false);
+  }; 
 
   // ========== ESTILOS ATUALIZADOS ==========
   const containerStyle = {

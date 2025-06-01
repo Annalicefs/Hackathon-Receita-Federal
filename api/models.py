@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 
@@ -74,6 +75,9 @@ class Vape(models.Model):
 
 class Componente(models.Model):
     nome_componente = models.CharField(max_length=100, unique=True)
+    tipo_do_componente = models.CharField(max_length=50, default="Outros")
+    modelo_do_componente = models.CharField(max_length=50, blank=True, null=True)
+    fabricante_do_componente = models.CharField(max_length=100, blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
     unidade_medida = models.CharField(max_length=50)
 

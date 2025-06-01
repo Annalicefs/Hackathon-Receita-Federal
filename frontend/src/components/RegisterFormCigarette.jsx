@@ -3,23 +3,65 @@ import axios from 'axios';
 import api from '../services/auth'; 
 
 function RegisterFormCigarette() {
-  // Estados permanecem inalterados
   const [nome, setNome] = useState('');
   const [tipo, setTipo] = useState('');
   const [quantidade, setQuantidade] = useState(0);
   const [dataApreensao, setDataApreensao] = useState('');
   const [message, setMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  // Funções permanecem inalteradas
+  const [isSuccess, setIsSuccess] = useState(false); 
+  
   const handleQuantidadeChange = (increment) => {
-    setQuantidade(prev => Math.max(0, prev + increment));
+    setQuantidade(prev => Math.max(0, prev + increment)); 
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    // Lógica de submissão permanece inalterada
-  };
+    event.preventDefault(); 
+
+    const dadosCigarro = {
+      tipo_vape: tipo,       
+      marca: nome,      
+      modelo: "N/A",         
+      quantidade: quantidade,
+      data_apreensao: dataApreensao, 
+    };
+
+    console.log('Dados do formulário:', dadosCigarro); 
+
+    try{
+        const response = await api.post('/vapes/', dadosCigarro); 
+
+        if (response.status >= 200 && response.status < 300) {
+        setMessage('Cigarro eletrônico cadastrado com sucesso!');
+        setIsSuccess(true);
+        setNome('');
+        setTipo('');
+        setQuantidade(0);
+        setDataApreensao('');
+
+        } else {
+        setMessage('Erro desconhecido ao enviar solicitação.');
+        setIsSuccess(false);
+        }
+    } catch (error) {
+        console.error('Erro ao cadastrar cigarro eletrônico:', error.response?.data || error.message);
+        let errorMessage = 'Erro ao cadastrar cigarro eletrônico. ';
+        if (error.response && error.response.data) {
+        if (error.response.data.detail) {
+            errorMessage = error.response.data.detail;
+        } else if (error.response.data.non_field_errors) {
+            errorMessage += error.response.data.non_field_errors.join(', ');
+        } else {
+            for (const key in error.response.data) {
+              if (error.response.data.hasOwnProperty(key)) {
+                  errorMessage += `${key}: ${error.response.data[key].join(', ')}. `;
+              }
+            }
+        }
+        }
+        setMessage(errorMessage);
+        setIsSuccess(false);
+    }
+};
 
   // ========== NOVOS ESTILOS MINIMALISTAS ==========
   const containerStyle = {
@@ -146,7 +188,6 @@ function RegisterFormCigarette() {
 
   return (
     <div style={containerStyle}>
-      {/* Barra superior com título */}
       <div style={headerStyle}>
         <h1 style={titleStyle}>Cadastro de cigarros eletrônicos</h1>
       </div>
@@ -155,7 +196,6 @@ function RegisterFormCigarette() {
         {message && <div style={messageStyle}>{message}</div>}
         
         <form onSubmit={handleSubmit}>
-          {/* Campo Nome */}
           <div style={formGroupStyle}>
             <label htmlFor="nome" style={labelStyle}>
               Nome

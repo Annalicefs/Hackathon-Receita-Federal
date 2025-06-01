@@ -7,13 +7,13 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
             await login(email, password); 
             setMessage('Login realizado com sucesso!');
-            navigate('/dashboard'); 
+            navigate('/nossas-instituicoes'); 
+
         } catch (error) {
             console.error('Erro na requisição de login:', error.response?.data || error.message);
             setMessage(error.response?.data?.detail || 'Erro ao fazer login. Verifique suas credenciais.');

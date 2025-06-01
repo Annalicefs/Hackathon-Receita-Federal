@@ -61,12 +61,10 @@ const Termos = () => {
 
   return (
     <div style={containerStyle}>
-      {/* Barra superior com título centralizado e largura total */}
       <div style={headerStyle}>
         <h1 style={titleStyle}>Termos</h1>
       </div>
 
-      {/* Retângulo com bordas superior-esquerda e inferior-direita arredondadas */}
       <div style={contentBoxStyle}>
         <h2 style={headingStyle}>Quem pode receber mercadorias?</h2>
         
