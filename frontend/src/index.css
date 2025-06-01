@@ -1,34 +1,26 @@
 body, html {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; /* Garante que padding e border sejam incluídos na largura/altura */
+  box-sizing: border-box; 
 }
 
-/* Estilos para o corpo da aplicação (fundo padrão, fonte) */
 body {
-  font-family: 'Arial', sans-serif; /* Fonte padrão do app */
-  line-height: 1.6; /* Altura da linha padrão */
-  background-color: #F0F2F5; /* Cor de fundo geral para o corpo do app (um cinza claro, se não for azul) */
-  color: #333; /* Cor de texto padrão */
+  font-family: 'Arial', sans-serif; 
+  line-height: 1.6; 
+  background-color: #F0F2F5;
+  color: #333;
 }
 
-/* Estilo para o elemento raiz do React, que ocupa toda a tela */
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* Por padrão, não terá largura máxima ou margens para permitir layouts de tela cheia */
 }
 
-/* Estilos de link globais (se aplicável) */
 a {
   text-decoration: none;
-  color: inherit; /* Links herdam a cor do texto pai por padrão */
+  color: inherit;
 }
-
-/* Você pode importar fontes aqui */
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap'); */
-
 
 /*:root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

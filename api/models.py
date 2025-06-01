@@ -3,24 +3,19 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 
-# Exemplo de customização de usuário (opcional, mas recomendado para tipo_usuario)
 class Usuario(AbstractUser):
-    # Sobrescreve o campo username para usar email como login
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['nome_completo']
 
-    # Modifique o campo 'username' herdado para ser nulo e em branco
-    # O AbstractUser já define 'username', então precisamos sobrescrevê-lo.
     username = models.CharField(
-        max_length=150, # Tamanho padrão do username
+        max_length=150, 
         unique=True,
-        blank=True,    # Permite que seja vazio em formulários
-        null=True,     # Permite que seja NULL no banco de dados
-        default=None,  # Garante que não seja uma string vazia, mas NULL
+        blank=True,    
+        null=True,    
+        default=None,  
         verbose_name="Nome de Usuário (opcional)"
     )
-
 
     TIPO_USUARIO_CHOICES = (
         ('Receita Federal', 'Receita Federal'),
@@ -65,10 +60,10 @@ class Vape(models.Model):
     tipo_vape = models.CharField(max_length=100)
     marca = models.CharField(max_length=100, blank=True, null=True)
     modelo = models.CharField(max_length=100, blank=True, null=True)
-    quantidade = models.IntegerField() # Quantidade de unidades físicas de Vapes
+    quantidade = models.IntegerField()
     data_apreensao = models.DateField()
     observacoes = models.TextField(blank=True, null=True)
-    id_usuario_cadastro = models.ForeignKey(Usuario, on_delete=models.PROTECT) # Evita deletar usuário com vapes cadastrados
+    id_usuario_cadastro = models.ForeignKey(Usuario, on_delete=models.PROTECT) 
 
     class Meta:
         db_table = 'VAPES'
@@ -88,18 +83,18 @@ class Componente(models.Model):
         db_table = 'COMPONENTES'
 
 class VapeComponente(models.Model):
-    id_vape = models.ForeignKey(Vape, on_delete=models.CASCADE) # Se o vape for deletado, a ligação é deletada
-    id_componente = models.ForeignKey(Componente, on_delete=models.PROTECT) # Protege o componente
+    id_vape = models.ForeignKey(Vape, on_delete=models.CASCADE)
+    id_componente = models.ForeignKey(Componente, on_delete=models.PROTECT)
     quantidade_por_vape = models.IntegerField()
 
     class Meta:
         db_table = 'VAPE_COMPONENTE'
-        unique_together = ('id_vape', 'id_componente') # Garante par único
+        unique_together = ('id_vape', 'id_componente') 
 
 class EstoqueComponente(models.Model):
-    id_componente = models.OneToOneField(Componente, on_delete=models.CASCADE, primary_key=True) # 1:1 com Componente
+    id_componente = models.OneToOneField(Componente, on_delete=models.CASCADE, primary_key=True) 
     quantidade_total = models.IntegerField(default=0)
-    data_ultima_atualizacao = models.DateTimeField(auto_now=True) # Atualiza automaticamente na modificação
+    data_ultima_atualizacao = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'ESTOQUE_COMPONENTES'
@@ -114,7 +109,7 @@ class HistoricoEstoque(models.Model):
     tipo_movimento = models.CharField(max_length=50, choices=TIPO_MOVIMENTO_CHOICES)
     quantidade_movimentada = models.IntegerField()
     data_movimento = models.DateTimeField(auto_now_add=True)
-    id_referencia_origem = models.IntegerField(null=True, blank=True) # Referência flexível
+    id_referencia_origem = models.IntegerField(null=True, blank=True)
     observacoes = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -139,7 +134,6 @@ class Instituicao(models.Model):
     data_aprovacao = models.DateTimeField(null=True, blank=True)
     id_usuario_aprovador = models.ForeignKey(Usuario, on_delete=models.PROTECT, null=True, blank=True, related_name='instituicoes_aprovadas')
 
-     #CAMPOS DE arquivo como input
     assinatura_solicitante_pdf = models.FileField(
         upload_to='instituicoes/assinaturas/',
         blank=True,
@@ -186,7 +180,7 @@ class Requisicao(models.Model):
     )
     status_requisicao = models.CharField(max_length=50, choices=STATUS_CHOICES, default='Pendente')
     finalidade_projeto = models.TextField()
-    observacoes_receita = models.TextField(blank=True, null=True) # Observações da Receita sobre a requisição
+    observacoes_receita = models.TextField(blank=True, null=True) 
     id_usuario_analise = models.ForeignKey(Usuario, on_delete=models.PROTECT, null=True, blank=True, related_name='requisicoes_analisadas')
     data_analise = models.DateTimeField(null=True, blank=True)
 
@@ -194,7 +188,7 @@ class Requisicao(models.Model):
         db_table = 'REQUISICOES'
 
 class ItemRequisicao(models.Model):
-    id_requisicao = models.ForeignKey(Requisicao, on_delete=models.CASCADE, related_name='itens') # Se a requisição for deletada, os itens são deletados
+    id_requisicao = models.ForeignKey(Requisicao, on_delete=models.CASCADE, related_name='itens') 
     id_componente = models.ForeignKey(Componente, on_delete=models.PROTECT)
     quantidade_solicitada = models.IntegerField()
 

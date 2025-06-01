@@ -25,7 +25,6 @@ function InstituicaoCadastro() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  };
 
     try {
       const formData = new FormData();
@@ -75,27 +74,15 @@ function InstituicaoCadastro() {
       }
     } catch (error) {
       let errorMessage = 'Erro ao enviar solicitação. ';
+
       console.error('Erro ao enviar solicitação de instituição:', error.response?.data || error.message);
       
       if (error.response && error.response.data) {
-        if (error.response.data.nome_instituicao) {
-          errorMessage += `Nome: ${error.response.data.nome_instituicao.join(', ')}. `;
-        }
-        if (error.response.data.cnpj) {
-          errorMessage += `CNPJ: ${error.response.data.cnpj.join(', ')}. `;
-        }
-        if (error.response.data.assinatura_solicitante_pdf) {
-            errorMessage += `Assinatura: ${error.response.data.assinatura_solicitante_pdf.join(', ')}. `;
-        }
-        if (error.response.data.detail) {
-          errorMessage = error.response.data.detail; 
-        }
-        
-        if (typeof error.response.data === 'string') { 
-          errorMessage = error.response.data;
-        } else if (error.response.data.detail) { 
-            errorMessage = error.response.data.detail;
-        } else if (error.response.data.non_field_errors) { 
+        if (typeof error.response.data === 'string') {
+            errorMessage = error.response.data;
+        } else if (error.response.data.detail) {
+            errorMessage = error.response.data.detail; 
+        } else if (error.response.data.non_field_errors) {
             errorMessage += `Erros gerais: ${error.response.data.non_field_errors.join(', ')}. `;
         } else {
             for (const key in error.response.data) {
@@ -109,10 +96,10 @@ function InstituicaoCadastro() {
             }
           }
       }
-    }
-      setMessage(errorMessage);
-      setIsSuccess(false);
-  }; 
+    setMessage(errorMessage);
+    setIsSuccess(false);
+  }
+};
 
   // ========== ESTILOS ATUALIZADOS ==========
   const containerStyle = {
@@ -271,7 +258,6 @@ function InstituicaoCadastro() {
 
   return (
     <div style={containerStyle}>
-      {/* Barra superior com título */}
       <div style={headerStyle}>
         <h1 style={titleStyle}>Cadastro de instituição parceira</h1>
       </div>
@@ -280,7 +266,6 @@ function InstituicaoCadastro() {
         {message && <div style={messageStyle}>{message}</div>}
         
         <form onSubmit={handleSubmit}>
-          {/* Informações básicas */}
           <div style={formGroupStyle}>
             <label htmlFor="nomeInstituicao" style={labelStyle}>
               Nome Oficial/Razão Social <span style={requiredIndicatorStyle}>*</span>
@@ -363,7 +348,6 @@ function InstituicaoCadastro() {
             ></textarea>
           </div>
 
-          {/* Assinatura */}
           <div style={formGroupStyle}>
             <label style={labelStyle}>
               Assinatura do solicitante (pdf) <span style={requiredIndicatorStyle}>*</span>
@@ -387,12 +371,10 @@ function InstituicaoCadastro() {
             </div>
           </div>
 
-          {/* Seção OSC */}
           <h3 style={sectionTitleStyle}>
             Caso seja uma Organização de Sociedade Civil (Se não for o caso, apenas preencha os campos acima)
           </h3>
 
-          {/* Documentos OSC */}
           <div style={formGroupStyle}>
             <label style={labelStyle}>
               Estatuto registrado e suas alterações (pdf)
@@ -485,12 +467,10 @@ function InstituicaoCadastro() {
             </div>
           </div>
 
-          {/* Observação */}
           <p style={obsStyle}>
             OBS.: O nome completo e email do responsável será vinculado ao perfil deste usuário.
           </p>
 
-          {/* Botão de cadastro */}
           <button type="submit" style={submitButtonStyle}>
             Cadastrar
           </button>

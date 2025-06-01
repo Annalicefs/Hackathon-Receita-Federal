@@ -28,12 +28,8 @@ urlpatterns = [
     path('auth/register/', UsuarioRegistroView.as_view(), name='usuario_registro'),
     path('auth/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('auth/me/', UsuarioDetailView.as_view(), name='usuario_detalhe'), # Para o usuário logado ver seus dados
-    path('usuarios/<int:pk>/', UsuarioDetailView.as_view(), name='usuario_detalhe_por_pk'), # Para RF ver outros usuários
-
-    # Rotas públicas
+    path('auth/me/', UsuarioDetailView.as_view(), name='usuario_detalhe'), 
+    path('usuarios/<int:pk>/', UsuarioDetailView.as_view(), name='usuario_detalhe_por_pk'),
     path('estoque-componentes/publico/', EstoqueComponentePublicoView.as_view(), name='estoque_publico'),
-
-    # Rotas gerenciadas pelo Router para ViewSets
     path('', include(router.urls)),
 ]

@@ -1,55 +1,51 @@
-// frontend/src/components/ConsultaComponente/ConsultaComponente.jsx
 import React, { useState } from 'react';
 import api from '../services/auth';
+import { useNavigate } from 'react-router-dom';
 
 function ConsultaComponente() {
-  // Estados para os campos de consulta
   const [nome, setNome] = useState('');
   const [tipo, setTipo] = useState('');
   const [modelo, setModelo] = useState('');
   const [fabricante, setFabricante] = useState('');
   const [componentesEncontrados, setComponentesEncontrados] = useState([]);
 
-  const [message, setMessage] = useState(''); // Para mensagens de feedback
-  const [isSuccess, setIsSuccess] = useState(false); // Para estilizar a mensagem
+  const [message, setMessage] = useState(''); 
+  const [isSuccess, setIsSuccess] = useState(false); 
 
-  // Função para lidar com a submissão do formulário de consulta
   const handleSearch = async (event) => {
-    event.preventDefault(); // Previne o comportamento padrão de recarregar a página
+    debugger;
+    event.preventDefault(); 
+    console.log('DEBUG HANDLER: Iniciando handleSearch.');
     console.log('Dados do formulário no frontend (estados):', { nome, tipo, modelo, fabricante }); 
 
     setMessage('Consultando componentes...');
     setIsSuccess(true);  
 
     try {
-   const queryParams = {};
-      if (nome) queryParams.nome_componente = nome;           
-      if (tipo) queryParams.tipo_do_componente = tipo;        
-      if (modelo) queryParams.modelo_do_componente = modelo;  
-      if (fabricante) queryParams.fabricante_do_componente = fabricante;
+        const queryParams = {};
+        if (nome) queryParams.nome_componente = nome;           
+        if (tipo) queryParams.tipo_do_componente = tipo;        
+        if (modelo) queryParams.modelo_do_componente = modelo;  
+        if (fabricante) queryParams.fabricante_do_componente = fabricante;
 
-      const response = await api.get('componentes/', { params: queryParams });
+        console.log('Critérios de consulta para o backend (queryParams):', queryParams);
 
-      const dadosComponentes = response.data;
+        const response = await api.get('/componentes/', { params: queryParams });
+        const dadosComponentes = response.data;
 
-      // ESTES CONSOLE.LOGS SÃO CRUCIAIS AGORA
         console.log('DEBUG FRONTEND: Dados recebidos APÓS a requisição:', dadosComponentes);
         console.log('DEBUG FRONTEND: Tipo de dadosComponentes.results:', Array.isArray(dadosComponentes.results));
         console.log('DEBUG FRONTEND: Conteúdo de dadosComponentes.results:', dadosComponentes.results);
 
-        setComponentesEncontrados(dadosComponentes.results); // <<-- VERIFIQUE AQUI: É .results ou dadosComponentes direto?
-
-        console.log('DEBUG FRONTEND: Estado componentesEncontrados ATUALIZADO para:', componentesEncontrados);
-
+        setComponentesEncontrados(dadosComponentes.results || []);
     
-    if (dadosComponentes.results && dadosComponentes.results.length > 0) { // <<-- CORRIGIDO!
-        setMessage(`Consulta realizada com sucesso! ${dadosComponentes.results.length} componente(s) encontrado(s).`); // <<-- Use .results.length aqui também
-        setIsSuccess(true);
-    } else {
-        setComponentesEncontrados([]);
-        setMessage('Nenhum componente encontrado com os critérios especificados.');
-        setIsSuccess(false);
-    }
+        if (dadosComponentes.results && dadosComponentes.results.length > 0) {
+            setMessage(`Consulta realizada com sucesso! ${dadosComponentes.results.length} componente(s) encontrado(s).`);
+            setIsSuccess(true);
+        } else {
+            setMessage('Nenhum componente encontrado com os critérios especificados.');
+            setIsSuccess(false); 
+        }
     } catch (error) {
       console.error('Erro ao consultar componentes:', error.response?.data || error.message || error);
       let errorMessage = 'Erro ao realizar a consulta. ';
@@ -90,8 +86,6 @@ function ConsultaComponente() {
       setComponentesEncontrados([]);
     }
   };
-
-
 
 const headerStyle = {
     backgroundColor: '#0A2647',
@@ -207,7 +201,6 @@ const headerStyle = {
     marginBottom: '5px',
   };
 
-
   return (
     <div style={{ fontFamily: "'Roboto', sans-serif", backgroundColor: '#eef2f6', minHeight: '100vh', paddingBottom: '50px' }}>
       <header style={headerStyle}>
@@ -279,13 +272,11 @@ const headerStyle = {
             style={buttonStyle}
             onMouseOver={(e) => { e.target.style.backgroundColor = buttonHoverStyle.backgroundColor; e.target.style.transform = buttonHoverStyle.transform; }}
             onMouseOut={(e) => { e.target.style.backgroundColor = buttonStyle.backgroundColor; e.target.style.transform = 'translateY(0)'; }}
-          >
-            Consultar {/* O texto do botão foi ajustado para "Consultar" */}
+          > Consultar 
           </button>
         </form>
       </div>
 
-      {/* Seção para exibir os resultados da consulta */}
       {componentesEncontrados.length > 0 && (
         <div style={resultsContainerStyle}>
           <h3 style={{ color: '#0A2647', marginBottom: '15px', textAlign: 'center' }}>Resultados da Consulta:</h3>

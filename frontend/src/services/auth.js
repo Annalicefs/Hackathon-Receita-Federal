@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'
 
-// Instancia pra url api
 const api = axios.create({
     baseURL: 'http://127.0.0.1:8000/api/v1/',
     headers: {
@@ -59,18 +59,38 @@ export const register = async (nomeCompleto, email, password) => {
 
 export const login = async (email, password) => {
     const response = await api.post('auth/login/', { email, password });
-    // Armazena tokens e dados do usuário no localStorage
     localStorage.setItem('accessToken', response.data.access);
     localStorage.setItem('refreshToken', response.data.refresh);
     localStorage.setItem('userData', JSON.stringify(response.data.user));
     return response.data;
 };
 
+export const isUserLoggedIn = () => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) return false;
+
+    try {
+        const decodedToken = jwtDecode(accessToken);
+        if (decodedToken.exp * 1000 < Date.now()) {
+            console.warn("Access Token expirado na verificação de isUserLoggedIn.");
+            return false;
+        }
+        return true;
+    } catch (e) {
+        console.error("Erro ao decodificar access token:", e);
+        return false;
+    }
+};
+
+export const getUserData = () => {
+    const userDataString = localStorage.getItem('userData');
+    return userDataString ? JSON.parse(userDataString) : null;
+};
+
 export const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userData');
-    //api.post('auth/logout/', { refresh: refreshToken });
 };
 
 export const getCurrentUser = () => {
@@ -78,5 +98,4 @@ export const getCurrentUser = () => {
     return userData ? JSON.parse(userData) : null;
 };
 
-//Exporta configuraçao
 export default api; 

@@ -43,7 +43,7 @@ const RequisicaoComponentes = () => {
     setFormData(prev => ({ ...prev, documento: e.target.files[0] }));
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     setMessage('Enviando requisição...');
@@ -51,30 +51,29 @@ const RequisicaoComponentes = () => {
     
     try {
       const formDataToSend = new FormData(); 
-      formDataToSend.append('responsavel_nome', formData.responsavel); // Usando formData.responsavel
+      formDataToSend.append('responsavel_nome', formData.responsavel); 
       formDataToSend.append('titulo_projeto', formData.tituloProjeto);
       formDataToSend.append('finalidade_projeto', formData.finalidade);
       formDataToSend.append('justificativa', formData.justificativa);
       formDataToSend.append('componentes_solicitados_json', JSON.stringify(componentes.map(c => ({
-        nome: c.nome,       // Usando c.nome (campo do estado 'componentes')
+        nome: c.nome,       
         quantidade: c.quantidade
       }))));
 
-      if (formData.documento) { // Usando formData.documento
+      if (formData.documento) { 
         formDataToSend.append('documento_solicitacao_assinado_pdf', formData.documento);
       }
       
-      const response = await api.post('/requisicoes/', formDataToSend, { // Assumindo baseURL está em auth.js
+      const response = await api.post('/requisicoes/', formDataToSend, { 
         headers: {
-          'Content-Type': 'multipart/form-data', // Necessário para enviar arquivos
+          'Content-Type': 'multipart/form-data', 
         },
       });
 
        if (response.status >= 200 && response.status < 300) {
         setMessage('Requisição de componentes enviada com sucesso! Aguarde aprovação.');
         setIsSuccess(true);
-        // Limpar o formulário
-        setFormData({ // Limpa o estado 'formData' principal
+        setFormData({ 
           responsavel: '',
           tituloProjeto: '',
           finalidade: '',
@@ -83,7 +82,7 @@ const RequisicaoComponentes = () => {
         });
         setComponentes([{ id: 1, nome: '', quantidade: '' }]);
          
-        if (document.getElementById('documento')) { // ID 'documento' da main
+        if (document.getElementById('documento')) { 
             document.getElementById('documento').value = null; 
         }
       } else {

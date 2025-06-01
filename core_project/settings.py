@@ -18,8 +18,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/stable/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-=+your-strong-and-unique-secret-key-here#*&!'
 
 
@@ -27,8 +25,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [] 
 
-
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -78,7 +74,6 @@ WSGI_APPLICATION = 'core_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/stable/ref/settings/#databases
-# ATENÇÃO: Configure seu banco de dados MySQL aqui.
 # O exemplo abaixo é para SQLite para facilitar testes iniciais.
 """	DATABASES = {
     'default': {
@@ -94,8 +89,8 @@ DATABASES = {
         'NAME': 'hackathon_receita',
         'USER': 'root',
         'PASSWORD': 'Anaellen.1',
-        'HOST': 'localhost',   # ou o host do seu DB
-        'PORT': '3306',        # ou a porta do seu DB
+        'HOST': 'localhost',   
+        'PORT': '3306',        
         'OPTIONS': {
             'init_command': "SET  default_storage_engine=InnoDB;",
         },
@@ -146,7 +141,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Configuração do Modelo de Usuário Customizado
 AUTH_USER_MODEL = 'api.Usuario' 
 
 REST_FRAMEWORK = {

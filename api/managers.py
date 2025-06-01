@@ -1,4 +1,3 @@
-# api/managers.py
 from django.contrib.auth.models import BaseUserManager
 
 class CustomUserManager(BaseUserManager):
@@ -22,7 +21,7 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        if 'nome_completo' not in extra_fields: # Garante que nome_completo é passado
+        if 'nome_completo' not in extra_fields: 
             raise ValueError('Superuser must have a nome_completo.')
 
         return self.create_user(email, password, **extra_fields)

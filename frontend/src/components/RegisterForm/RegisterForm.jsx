@@ -14,7 +14,6 @@ function RegisterForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validação de senhas no frontend
         if (password !== passwordConfirm) {
             setMessage('As senhas não correspondem.');
             setIsSuccess(false);
@@ -22,7 +21,6 @@ function RegisterForm() {
         }
 
         try {
-            // Chamada à API de registro (mantida igual)
             const userData = await register(nomeCompleto, email, password);
             setMessage(`Cadastro de ${userData.email} realizado com sucesso! Agora você pode fazer login.`);
             setIsSuccess(true);
@@ -155,7 +153,6 @@ function RegisterForm() {
 
     return (
         <div style={containerStyle}>
-            {/* Barra superior com título */}
             <div style={headerStyle}>
                 <h1 style={titleStyle}>Cadastro</h1>
             </div>

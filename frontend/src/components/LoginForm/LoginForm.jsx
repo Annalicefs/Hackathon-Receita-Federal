@@ -12,7 +12,7 @@ function LoginForm() {
         try {
             await login(email, password); 
             setMessage('Login realizado com sucesso!');
-            navigate('/nossas-instituicoes'); 
+            navigate('/nossas-instituicoes-parceiras'); 
 
         } catch (error) {
             console.error('Erro na requisição de login:', error.response?.data || error.message);
@@ -120,7 +120,6 @@ function LoginForm() {
 
     return (
         <div style={containerStyle}>
-            {/* Barra superior com título */}
             <div style={headerStyle}>
                 <h1 style={titleStyle}>Login</h1>
             </div>

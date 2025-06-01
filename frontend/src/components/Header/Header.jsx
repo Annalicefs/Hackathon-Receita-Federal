@@ -16,9 +16,7 @@ function Header() {
     <>
       <header className="header-container"> 
         <Link to="/" style={{ textDecoration: 'none' }}>
-          <img src={logoReceitaFederal} alt="Receita Federal Logo" className="header-logo" /> {/* Usa a classe CSS */}
-          {/* Você pode adicionar o texto "Receita Federal" aqui se quiser */}
-          {/* <span style={{ color: '#0A2647', marginLeft: '10px' }}>Receita Federal</span> */}
+          <img src={logoReceitaFederal} alt="Receita Federal Logo" className="header-logo" /> 
         </Link>
         <div className="header-menu-icon" onClick={toggleMenu}>☰</div>
       </header>

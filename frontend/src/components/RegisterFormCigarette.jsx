@@ -210,7 +210,6 @@ function RegisterFormCigarette() {
             />
           </div>
 
-          {/* Campo Tipo */}
           <div style={formGroupStyle}>
             <label htmlFor="tipo" style={labelStyle}>
               Tipo
@@ -225,7 +224,6 @@ function RegisterFormCigarette() {
             />
           </div>
 
-          {/* Campo Quantidade */}
           <div style={formGroupStyle}>
             <label htmlFor="quantidade" style={labelStyle}>
               Quantidade
@@ -249,7 +247,6 @@ function RegisterFormCigarette() {
             </div>
           </div>
 
-          {/* Campo Data de Apreensão */}
           <div style={formGroupStyle}>
             <label htmlFor="dataApreensao" style={labelStyle}>
               Data de apreensão
@@ -264,7 +261,6 @@ function RegisterFormCigarette() {
             />
           </div>
 
-          {/* Botão de cadastro */}
           <button type="submit" style={submitButtonStyle}>
             Cadastrar
           </button>

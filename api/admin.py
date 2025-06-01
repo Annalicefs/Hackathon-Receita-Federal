@@ -6,7 +6,6 @@ from .models import (
     HistoricoEstoque, Instituicao, Requisicao, ItemRequisicao
 )
 
-# Registrando cada modelo no painel de administração
 admin.site.register(Usuario)
 admin.site.register(Vape)
 admin.site.register(Componente)

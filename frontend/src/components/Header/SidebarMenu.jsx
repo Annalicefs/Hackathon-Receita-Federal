@@ -1,4 +1,3 @@
-// frontend/src/components/SidebarMenu/SidebarMenu.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 

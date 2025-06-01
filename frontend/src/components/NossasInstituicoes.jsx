@@ -126,9 +126,8 @@ const InstituicoesParceiras = () => {
         <p style={descriptionStyle}>
           Essas são as organizações que apoiam nosso programa de reutilização consciente de peças em cigarros eletrônicos:
         </p>
-
-        <div style={dividerStyle}></div>
         
+        <div style={dividerStyle}></div>
         <div style={institutionsContainerStyle}>
           {[...Array(Math.ceil(instituicoes.length / 3))].map((_, rowIndex) => (
             <div key={rowIndex} style={institutionRowStyle}>
@@ -149,4 +148,3 @@ const InstituicoesParceiras = () => {
 };
 
 export default InstituicoesParceiras;
-
