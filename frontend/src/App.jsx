@@ -9,7 +9,7 @@ import LoginForm from './components/LoginForm/LoginForm.jsx';
 import Dashboard from './components/Dashboard/Dashboard.jsx';
 import InstituicaoCadastro from './components/InstituicaoCadastro.jsx';
 import RegisterFormCigarette from './components/RegisterFormCigarette.jsx';
-import ConsultaComponente from './components/ConsultaComponente.jsx';
+import ConsultarComponente from './components/ConsultarComponente.jsx';
 import Termos from './components/Termos.jsx';
 import NossasInstituicoes from './components/NossasInstituicoes.jsx'
 import RequisicaoComponentes from './components/RequisicaoComponentes.jsx'
@@ -26,7 +26,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cadastro-instituicoes" element={<InstituicaoCadastro />} />
           <Route path="/cadastro-cigarros" element={<RegisterFormCigarette />} />
-          <Route path="/consultar-componente" element={<ConsultaComponente />} />
+          <Route path="/consultar-componente" element={<ConsultarComponente />} />
           <Route path="/termos" element={<Termos />} />
           <Route path="/requisicao-componentes" element={<RequisicaoComponentes />} />
           <Route path="/nossas-instituicoes-parceiras" element={<NossasInstituicoes />} />

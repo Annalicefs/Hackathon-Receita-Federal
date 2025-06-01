@@ -3,7 +3,7 @@
   color: #0A2647;           
   height: 60px;             
   display: flex;
-  justify-content: 'space-between'; 
+  justify-content: space-between; /* Corrigido: removidas as aspas */
   align-items: center;
   padding: 0 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -17,12 +17,14 @@
 
 .header-logo {
   height: 40px;
+  margin-left: 45px; /* Adicionada margem à esquerda para a logo */
 }
 
 .header-menu-icon {
   font-size: 30px;
   cursor: pointer;
-  color: #0A2647; 
+  color: #0A2647;
+  margin-right: 45px; /* Adicionada margem à direita para o ícone */
 }
 
 .header-nav-links {
@@ -39,5 +41,5 @@
 }
 
 .header-nav-link:hover {
-    color: #394867; 
+  color: #394867; 
 }

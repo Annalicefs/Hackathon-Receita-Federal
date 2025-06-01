@@ -6,68 +6,102 @@ function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         try {
-            // Chama a função de login do seu serviço (auth.js)
             await login(email, password); 
             setMessage('Login realizado com sucesso!');
-            // Redireciona para o dashboard após login bem-sucedido
             navigate('/nossas-instituicoes'); 
+
         } catch (error) {
             console.error('Erro na requisição de login:', error.response?.data || error.message);
             setMessage(error.response?.data?.detail || 'Erro ao fazer login. Verifique suas credenciais.');
         }
     };
 
-    const formContainerStyle = {
-        maxWidth: '400px',
-        margin: '50px auto',
-        padding: '30px',
-        backgroundColor: '#FFFFFF',
-        borderRadius: '8px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    // ========== NOVO DESIGN ==========
+    const containerStyle = {
+        backgroundColor: 'white',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'Arial, sans-serif',
+        padding: '20px'
     };
 
-    const inputGroupStyle = {
-        marginBottom: '15px',
+    const headerStyle = {
+        backgroundColor: '#003772',
+        color: 'white',
+        padding: '20px 0',
+        borderBottomLeftRadius: '80px',
+        borderBottomRightRadius: '80px',
+        marginBottom: '40px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        width: '100%',
+        maxWidth: '500px',
+        textAlign: 'center',
+    };
+
+    const titleStyle = {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        margin: 0
+    };
+
+    const cardStyle = {
+        maxWidth: '400px',
+        width: '100%',
+        padding: '30px',
+        boxSizing: 'border-box',
+        backgroundColor: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.12)'
+    };
+
+    const formGroupStyle = {
+        marginBottom: '25px'
     };
 
     const labelStyle = {
         display: 'block',
-        marginBottom: '5px',
-        fontWeight: 'bold',
+        marginBottom: '8px',
+        fontWeight: '500',
         color: '#333',
+        fontSize: '16px'
     };
 
     const inputStyle = {
         width: '100%',
-        padding: '10px',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        boxSizing: 'border-box',
-        fontSize: '1em',
+        padding: '14px',
+        backgroundColor: '#D9D9D9',
+        border: 'none',
+        borderRadius: '18px',
+        fontSize: '16px',
+        outline: 'none',
+        boxSizing: 'border-box'
     };
 
     const buttonStyle = {
-        backgroundColor: '#28a745', // Cor verde para o botão de login
-        color: 'white',
-        padding: '12px 25px',
-        fontSize: '1.1em',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
         width: '100%',
+        padding: '14px',
+        backgroundColor: '#003772',
+        color: 'white',
+        border: 'none',
+        borderRadius: '18px',
+        fontSize: '16px',
+        fontWeight: '600',
+        cursor: 'pointer',
         marginTop: '20px',
-        transition: 'background-color 0.3s ease',
+        transition: 'background-color 0.2s'
     };
 
     const messageStyle = {
         padding: '10px',
         borderRadius: '4px',
-        marginBottom: '15px',
+        margin: '15px 0',
         textAlign: 'center',
         fontWeight: 'bold',
         backgroundColor: message.includes('sucesso') ? '#d4edda' : '#f8d7da',
@@ -75,40 +109,61 @@ function LoginForm() {
         border: message.includes('sucesso') ? '1px solid #c3e6cb' : '1px solid #f5c6cb',
     };
 
+    const linkStyle = {
+        color: '#003772',
+        textDecoration: 'none',
+        fontWeight: '500',
+        marginTop: '20px',
+        display: 'block',
+        textAlign: 'center'
+    };
+
     return (
-        <div style={formContainerStyle}>
-            <h2>Login</h2>
-            {message && <div style={messageStyle}>{message}</div>}
-            <form onSubmit={handleSubmit}>
-                <div style={inputGroupStyle}>
-                    <label htmlFor="email" style={labelStyle}>E-mail:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={inputStyle}
-                        required
-                    />
-                </div>
-                <div style={inputGroupStyle}>
-                    <label htmlFor="password" style={labelStyle}>Senha:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={inputStyle}
-                        required
-                    />
-                </div>
-                <button type="submit" style={buttonStyle}>
-                    Login
-                </button>
-            </form>
-            <p style={{ marginTop: '20px', textAlign: 'center' }}>
-                Ainda não tem conta? <Link to="/register" style={{ color: '#007bff', textDecoration: 'none' }}>Cadastre-se aqui</Link>
-            </p>
+        <div style={containerStyle}>
+            {/* Barra superior com título */}
+            <div style={headerStyle}>
+                <h1 style={titleStyle}>Login</h1>
+            </div>
+
+            <div style={cardStyle}>
+                {message && <div style={messageStyle}>{message}</div>}
+                
+                <form onSubmit={handleSubmit}>
+                    <div style={formGroupStyle}>
+                        <label htmlFor="email" style={labelStyle}>E-mail:</label>
+                        <input
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            style={inputStyle}
+                            required
+                            placeholder="Digite seu e-mail"
+                        />
+                    </div>
+                    
+                    <div style={formGroupStyle}>
+                        <label htmlFor="password" style={labelStyle}>Senha:</label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            style={inputStyle}
+                            required
+                            placeholder="Digite sua senha"
+                        />
+                    </div>
+                    
+                    <button type="submit" style={buttonStyle}>
+                        Entrar
+                    </button>
+                </form>
+                
+                <Link to="/register" style={linkStyle}>
+                    Ainda não tem conta? Cadastre-se aqui
+                </Link>
+            </div>
         </div>
     );
 }

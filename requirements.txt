@@ -1,4 +1,18 @@
-Django==5.0.*
-djangorestframework==3.15.*
-djangorestframework-simplejwt==5.3.*
-mysqlclient==2.2.*
+# ----- Frameworks Principais -----
+django~=5.0.6
+djangorestframework~=3.15.1
+djangorestframework-simplejwt~=5.3.1
+
+# ----- Conector de Banco de Dados -----
+# Para conectar com MySQL. Se usar outro banco, como PostgreSQL,
+# substitua por 'psycopg2-binary'. Não é necessário para SQLite.
+mysqlclient~=2.2.4
+
+# ----- Servidor de Aplicação WSGI -----
+# Usado para servir a aplicação em ambiente de produção.
+gunicorn~=22.0.0
+
+# ----- Utilitários  -----
+# Para carregar variáveis de ambiente de um arquivo .env
+python-dotenv~=1.0.1
+

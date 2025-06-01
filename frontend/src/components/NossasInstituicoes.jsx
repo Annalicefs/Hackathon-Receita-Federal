@@ -1,128 +1,145 @@
-// frontend/src/components/NossasInstituicoes/NossasInstituicoes.jsx
-import React, { useState, useEffect } from 'react';
-import api from '../services/auth'; // Importe a instância 'api' para buscar instituições
+import React from 'react';
 
-const NossasInstituicoes = () => {
-  const [instituicoes, setInstituicoes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const InstituicoesParceiras = () => {
+  // Dados fictícios de instituições parceiras
+  const instituicoes = [
+    { id: 1, nome: "Instituto Ambiental Brasil" },
+    { id: 2, nome: "Fundação Recicla Tech" },
+    { id: 3, nome: "ONG Sustentabilidade Digital" },
+    { id: 4, nome: "Associação de Inovação Verde" },
+    { id: 5, nome: "Centro de Reuso Tecnológico" },
+    { id: 6, nome: "Projeto E-lixo Zero" },
+    { id: 7, nome: "Aliança pela Tecnologia Sustentável" },
+    { id: 8, nome: "Movimento Consumo Consciente" },
+    { id: 9, nome: "Rede de Inovação Ecológica" },
+  ];
 
-  // Estilos reutilizados e adaptados
+  // Estilos
+  const containerStyle = {
+    backgroundColor: 'white',
+    minHeight: '100vh',
+    padding: '0',
+    fontFamily: 'Arial, sans-serif',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  };
+
+  // Barra superior com título centralizado e largura total
   const headerStyle = {
-    backgroundColor: '#0A2647',
-    color: '#EAF2F8',
-    padding: '40px 20px',
-    textAlign: 'center',
-    fontSize: '2.5em',
-    fontWeight: 'bold',
-    borderRadius: '0 0 50px 50px',
+    backgroundColor: '#003772',
+    color: 'white',
+    padding: '20px 0',
+    borderBottomLeftRadius: '80px',
+    borderBottomRightRadius: '80px',
     marginBottom: '40px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-  };
-
-  const contentContainerStyle = {
-    maxWidth: '900px',
-    margin: '0 auto',
-    padding: '30px',
-    backgroundColor: '#FFFFFF', // Cor de fundo do corpo, se necessário
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    width: '100%',
     textAlign: 'center',
+    position: 'relative'
   };
 
-  const subtitleStyle = {
-    fontSize: '1.2em',
-    color: '#555',
+  const titleStyle = {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    margin: 0
+  };
+
+  // Retângulo grande com bordas superiores arredondadas
+  const contentBoxStyle = {
+    backgroundColor: 'white',
+    borderRadius: '80px 80px 0 0',
+    padding: '40px',
+    width: '100%',
+    maxWidth: '1200px',
+    boxSizing: 'border-box',
+    lineHeight: '1.6',
+    color: '#333',
+    boxShadow: '0 0 20px rgba(0, 0, 0, 0.08)',
+    margin: '0 auto'
+  };
+
+  const descriptionStyle = {
+    fontSize: '18px',
     marginBottom: '30px',
-    borderBottom: '1px solid #eee',
-    paddingBottom: '15px',
+    textAlign: 'center',
+    color: '#555'
   };
 
-  const gridContainerStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', // Grade responsiva
-    gap: '20px',
-    justifyContent: 'center', // Centraliza os cards
+  const dividerStyle = {
+    height: '1px',
+    backgroundColor: '#E0E0E0',
+    width: '100%',
+    margin: '30px 0'
   };
 
-  const cardStyle = {
-    backgroundColor: '#f9f9f9',
-    borderRadius: '8px',
-    padding: '20px',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+  const institutionsContainerStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: '40px'
+  };
+
+  const institutionRowStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+    gap: '40px',
+    marginBottom: '40px'
+  };
+
+  const institutionCardStyle = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '150px', // Altura mínima para os cards
-    textAlign: 'center',
-    color: '#0A2647',
-    fontWeight: 'bold',
-    fontSize: '1.1em',
+    width: '200px'
   };
 
-  const cardImagePlaceholderStyle = {
-    width: '80px',
-    height: '80px',
-    backgroundColor: '#D9D9D9', // Cor cinza do placeholder
-    borderRadius: '50%', // Para fazê-lo circular, se o design for circular
-    marginBottom: '10px',
+  const squareStyle = {
+    width: '120px',
+    height: '120px',
+    backgroundColor: '#F0F0F0',
+    borderRadius: '20px',
+    marginBottom: '15px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: '#777',
-    fontSize: '0.8em',
+    fontSize: '40px',
+    color: '#003772',
+    fontWeight: 'bold'
   };
 
-  // Efeito para carregar as instituições (mockado por enquanto)
-  useEffect(() => {
-    const fetchInstituicoes = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // --- LÓGICA DE REQUISIÇÃO REAL (DESCOMENTAR E AJUSTAR) ---
-         const response = await api.get('/instituicoes/'); // Exemplo: GET para listar instituições
-         setInstituicoes(response.data);
-
-      } catch (err) {
-        console.error("Erro ao carregar instituições:", err);
-        setError("Não foi possível carregar as instituições no momento.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchInstituicoes();
-  }, []); // Executa apenas uma vez na montagem do componente
+  const nameStyle = {
+    fontSize: '18px',
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#003772'
+  };
 
   return (
-    <div style={{ fontFamily: "'Roboto', sans-serif", backgroundColor: '#eef2f6', minHeight: '100vh', paddingBottom: '50px' }}>
-      {/* Cabeçalho padrão */}
-      <header style={headerStyle}>
-        Instituições parceiras
-      </header>
+    <div style={containerStyle}>
+      <div style={headerStyle}>
+        <h1 style={titleStyle}>Instituições parceiras</h1>
+      </div>
 
-      {/* Conteúdo principal */}
-      <div style={contentContainerStyle}>
-        <p style={subtitleStyle}>
+      <div style={contentBoxStyle}>
+        <p style={descriptionStyle}>
           Essas são as organizações que apoiam nosso programa de reutilização consciente de peças em cigarros eletrônicos:
         </p>
 
-        {loading && <p style={{ color: '#0A2647' }}>Carregando instituições...</p>}
-        {error && <p style={{ color: 'red' }}>Erro: {error}</p>}
-
-        {!loading && !error && instituicoes.length === 0 && (
-          <p style={{ color: '#555' }}>Nenhuma instituição parceira encontrada.</p>
-        )}
-
-        <div style={gridContainerStyle}>
-          {!loading && !error && instituicoes.map((inst) => (
-            <div key={inst.id} style={cardStyle}>
-              <div style={cardImagePlaceholderStyle}>
-                Logo
-              </div>
-              <span>{inst.nome_instituicao}</span>
+        <div style={dividerStyle}></div>
+        
+        <div style={institutionsContainerStyle}>
+          {[...Array(Math.ceil(instituicoes.length / 3))].map((_, rowIndex) => (
+            <div key={rowIndex} style={institutionRowStyle}>
+              {instituicoes.slice(rowIndex * 3, rowIndex * 3 + 3).map((inst) => (
+                <div key={inst.id} style={institutionCardStyle}>
+                  <div style={squareStyle}>
+                    {inst.nome.charAt(0)}
+                  </div>
+                  <div style={nameStyle}>{inst.nome}</div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -131,4 +148,5 @@ const NossasInstituicoes = () => {
   );
 };
 
-export default NossasInstituicoes;
+export default InstituicoesParceiras;
+

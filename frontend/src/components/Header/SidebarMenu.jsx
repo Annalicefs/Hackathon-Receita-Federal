@@ -78,13 +78,13 @@ function SidebarMenu({ isOpen, toggleMenu }) {
           </Link>
         </li>
         <li style={menuItemStyle}>
-          <Link to="/menu1" style={menuLinkStyle} onClick={toggleMenu}>
-            menu
+          <Link to="/requisicao-componentes" style={menuLinkStyle} onClick={toggleMenu}>
+            Requisição de componentes
           </Link>
         </li>
         <li style={menuItemStyle}>
-          <Link to="/menu2" style={menuLinkStyle} onClick={toggleMenu}>
-            menu
+          <Link to="/nossas-instituicoes-parceiras" style={menuLinkStyle} onClick={toggleMenu}>
+            Nossas instituições parceiras
           </Link>
         </li>
       </ul>
