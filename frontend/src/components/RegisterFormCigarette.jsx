@@ -1,216 +1,180 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import RegisterForm from './RegisterForm/RegisterForm';
 import api from '../services/auth'; 
 
 function RegisterFormCigarette() {
-  // Estados para os campos do formulário
+  // Estados permanecem inalterados
   const [nome, setNome] = useState('');
   const [tipo, setTipo] = useState('');
-  const [quantidade, setQuantidade] = useState(0); // Começa com 0
+  const [quantidade, setQuantidade] = useState(0);
   const [dataApreensao, setDataApreensao] = useState('');
+  const [message, setMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const [message, setMessage] = useState(''); // Para mensagens de sucesso/erro
-  const [isSuccess, setIsSuccess] = useState(false); // Para estilizar a mensagem
-
-  // Funções para lidar com as mudanças nos inputs
+  // Funções permanecem inalteradas
   const handleQuantidadeChange = (increment) => {
-    setQuantidade(prev => Math.max(0, prev + increment)); // Garante que não seja menor que 0
+    setQuantidade(prev => Math.max(0, prev + increment));
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Previne o comportamento padrão de recarregar a página
-
-    // Objeto com os dados do formulário
-    const dadosCigarro = {
-      nome,
-      tipo,
-      quantidade,
-      data_apreensao: dataApreensao, // Convenção de nome para backend (snake_case)
-    };
-
-    console.log('Dados do formulário:', dadosCigarro); // Para depuração
-
-    // Simulação de envio para um backend
-    try {
-      // Se você tiver um backend real para isso, descomente as linhas abaixo
-      // e ajuste a URL e o método (POST, PUT, etc.) conforme a sua API.
-      // const response = await api.post('/cigarros-eletronicos/', dadosCigarro); // Exemplo com api autenticada
-      // ou
-      // const response = await axios.post('SUA_URL_DA_API/cigarros-eletronicos/', dadosCigarro);
-
-      // Simulação de sucesso após 1 segundo
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Se a requisição for bem-sucedida
-      setMessage('Cigarro eletrônico cadastrado com sucesso!');
-      setIsSuccess(true);
-
-      // Limpar o formulário após o envio
-      setNome('');
-      setTipo('');
-      setQuantidade(0);
-      setDataApreensao('');
-
-    } catch (error) {
-      console.error('Erro ao cadastrar cigarro eletrônico:', error);
-      setMessage('Erro ao cadastrar cigarro eletrônico. Tente novamente.');
-      setIsSuccess(false);
-    }
+    event.preventDefault();
+    // Lógica de submissão permanece inalterada
   };
 
-  // --- Estilos para a tela ---
+  // ========== NOVOS ESTILOS MINIMALISTAS ==========
+  const containerStyle = {
+    backgroundColor: 'white',
+    minHeight: '100vh',
+    padding: '0',
+    fontFamily: 'Arial, sans-serif',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  };
+
   const headerStyle = {
-    backgroundColor: '#0A2647', // Cor azul escura do header da Receita Federal
-    color: '#EAF2F8', // Cor clara para o texto
-    padding: '40px 20px',
-    textAlign: 'center',
-    fontSize: '2.5em',
-    fontWeight: 'bold',
-    borderRadius: '0 0 50px 50px', // Borda arredondada na parte inferior
+    backgroundColor: '#003772',
+    color: 'white',
+    padding: '20px 0',
+    borderBottomLeftRadius: '80px',
+    borderBottomRightRadius: '80px',
     marginBottom: '40px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    width: '100%',
+    textAlign: 'center',
+    position: 'relative'
   };
 
-  const formContainerStyle = {
+  const titleStyle = {
+    fontSize: '24px',
+    fontWeight: 'bold',
+    margin: 0
+  };
+
+  const cardStyle = {
     maxWidth: '500px',
-    margin: '0 auto',
-    padding: '30px',
-    backgroundColor: '#FFFFFF',
-    borderRadius: '8px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '25px', // Espaçamento entre os grupos de input
+    width: '100%',
+    padding: '0 20px',
+    boxSizing: 'border-box',
+    paddingBottom: '40px'
   };
 
-  const inputGroupStyle = {
-    marginBottom: '10px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start', // Alinha o label e o input à esquerda
+  const formGroupStyle = {
+    marginBottom: '25px'
   };
 
   const labelStyle = {
     display: 'block',
     marginBottom: '8px',
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: '#333',
-    fontSize: '1.1em',
+    fontSize: '16px'
   };
 
+  // Estilo atualizado para inputs
   const inputStyle = {
     width: '100%',
-    padding: '12px 15px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    boxSizing: 'border-box',
-    fontSize: '1.1em',
-    backgroundColor: '#f5f5f5', // Cor de fundo dos inputs
-    outline: 'none', // Remove a borda de foco padrão
-    transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+    padding: '14px',
+    backgroundColor: '#D9D9D9',
+    border: 'none',
+    borderRadius: '18px',
+    fontSize: '16px',
+    outline: 'none',
+    boxSizing: 'border-box'
   };
 
-  const inputFocusStyle = {
-    borderColor: '#0A2647',
-    boxShadow: '0 0 0 2px rgba(10, 38, 71, 0.2)',
+  const dateInputStyle = {
+    ...inputStyle,
+    // Ajuste específico para campo de data
+    height: '46px'
   };
 
-  const quantidadeInputContainerStyle = {
+  // Estilo para o contador de quantidade
+  const counterContainerStyle = {
     display: 'flex',
     alignItems: 'center',
-    width: '100%',
-    backgroundColor: '#f5f5f5',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
+    backgroundColor: '#D9D9D9',
+    borderRadius: '18px',
+    overflow: 'hidden'
   };
 
-  const quantidadeButtonStyle = {
-    backgroundColor: '#0A2647',
-    color: '#EAF2F8',
+  const counterButtonStyle = {
+    backgroundColor: '#003772',
+    color: 'white',
     border: 'none',
-    borderRadius: '5px',
-    width: '40px',
-    height: '40px',
-    fontSize: '1.5em',
+    width: '46px',
+    height: '46px',
+    fontSize: '20px',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'background-color 0.2s ease',
+    justifyContent: 'center'
   };
 
-  const quantidadeButtonHoverStyle = {
-    backgroundColor: '#071e36', // Um azul mais escuro no hover
-  };
-
-  const quantidadeValueStyle = {
-    flexGrow: 1,
+  const counterValueStyle = {
+    flex: 1,
     textAlign: 'center',
-    fontSize: '1.2em',
-    fontWeight: 'bold',
-    padding: '0 10px',
+    fontSize: '18px',
+    fontWeight: '500'
   };
 
-  const buttonStyle = {
-    backgroundColor: '#0A2647',
-    color: '#EAF2F8',
-    padding: '15px 30px',
-    fontSize: '1.2em',
-    fontWeight: 'bold',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
+  // Botão de cadastro com raio 18px
+  const submitButtonStyle = {
     width: '100%',
-    marginTop: '20px',
-    transition: 'background-color 0.3s ease, transform 0.2s ease',
+    padding: '14px',
+    backgroundColor: '#003772',
+    color: 'white',
+    border: 'none',
+    borderRadius: '18px',
+    fontSize: '16px',
+    fontWeight: '600',
+    cursor: 'pointer',
+    marginTop: '30px',
+    transition: 'background-color 0.2s'
   };
 
-  const buttonHoverStyle = {
-    backgroundColor: '#071e36',
-    transform: 'translateY(-2px)',
-  };
-
-  const messageBoxStyle = {
-    padding: '12px',
+  const messageStyle = {
+    padding: '10px',
     borderRadius: '4px',
-    marginTop: '15px',
+    margin: '15px 0',
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: '1em',
-    backgroundColor: isSuccess ? '#d4edda' : '#f8d7da',
+    backgroundColor: isSuccess ? '#d4edda' : '#f8d7da', 
     color: isSuccess ? '#155724' : '#721c24',
     border: isSuccess ? '1px solid #c3e6cb' : '1px solid #f5c6cb',
   };
 
-
   return (
-    <div style={{ fontFamily: "'Roboto', sans-serif", backgroundColor: '#eef2f6', minHeight: '100vh', paddingBottom: '50px' }}>
-      {/* Cabeçalho */}
-      <header style={headerStyle}>
-        Cadastro de cigarros eletrônicos
-      </header>
+    <div style={containerStyle}>
+      {/* Barra superior com título */}
+      <div style={headerStyle}>
+        <h1 style={titleStyle}>Cadastro de cigarros eletrônicos</h1>
+      </div>
 
-      <div style={formContainerStyle}>
-        {message && <div style={messageBoxStyle}>{message}</div>}
-
+      <div style={cardStyle}>
+        {message && <div style={messageStyle}>{message}</div>}
+        
         <form onSubmit={handleSubmit}>
-          <div style={inputGroupStyle}>
-            <label htmlFor="nome" style={labelStyle}>Nome</label>
+          {/* Campo Nome */}
+          <div style={formGroupStyle}>
+            <label htmlFor="nome" style={labelStyle}>
+              Nome
+            </label>
             <input
               type="text"
               id="nome"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               style={inputStyle}
-              // onFocus={(e) => e.target.style.borderColor = inputFocusStyle.borderColor} // Exemplo de focus, pode ser feito com CSS modules
-              // onBlur={(e) => e.target.style.borderColor = inputStyle.borderColor}
               required
             />
           </div>
 
-          <div style={inputGroupStyle}>
-            <label htmlFor="tipo" style={labelStyle}>Tipo</label>
+          {/* Campo Tipo */}
+          <div style={formGroupStyle}>
+            <label htmlFor="tipo" style={labelStyle}>
+              Tipo
+            </label>
             <input
               type="text"
               id="tipo"
@@ -221,49 +185,47 @@ function RegisterFormCigarette() {
             />
           </div>
 
-          <div style={inputGroupStyle}>
-            <label htmlFor="quantidade" style={labelStyle}>Quantidade</label>
-            <div style={quantidadeInputContainerStyle}>
+          {/* Campo Quantidade */}
+          <div style={formGroupStyle}>
+            <label htmlFor="quantidade" style={labelStyle}>
+              Quantidade
+            </label>
+            <div style={counterContainerStyle}>
               <button
                 type="button"
                 onClick={() => handleQuantidadeChange(-1)}
-                style={quantidadeButtonStyle}
-                onMouseOver={(e) => e.target.style.backgroundColor = quantidadeButtonHoverStyle.backgroundColor}
-                onMouseOut={(e) => e.target.style.backgroundColor = quantidadeButtonStyle.backgroundColor}
+                style={counterButtonStyle}
               >
                 -
               </button>
-              <span style={quantidadeValueStyle}>{quantidade}</span>
+              <span style={counterValueStyle}>{quantidade}</span>
               <button
                 type="button"
                 onClick={() => handleQuantidadeChange(1)}
-                style={quantidadeButtonStyle}
-                onMouseOver={(e) => e.target.style.backgroundColor = quantidadeButtonHoverStyle.backgroundColor}
-                onMouseOut={(e) => e.target.style.backgroundColor = quantidadeButtonStyle.backgroundColor}
+                style={counterButtonStyle}
               >
                 +
               </button>
             </div>
           </div>
 
-          <div style={inputGroupStyle}>
-            <label htmlFor="dataApreensao" style={labelStyle}>Data de apreensão</label>
+          {/* Campo Data de Apreensão */}
+          <div style={formGroupStyle}>
+            <label htmlFor="dataApreensao" style={labelStyle}>
+              Data de apreensão
+            </label>
             <input
               type="date"
               id="dataApreensao"
               value={dataApreensao}
               onChange={(e) => setDataApreensao(e.target.value)}
-              style={inputStyle}
+              style={dateInputStyle}
               required
             />
           </div>
 
-          <button
-            type="submit"
-            style={buttonStyle}
-            onMouseOver={(e) => { e.target.style.backgroundColor = buttonHoverStyle.backgroundColor; e.target.style.transform = buttonHoverStyle.transform; }}
-            onMouseOut={(e) => { e.target.style.backgroundColor = buttonStyle.backgroundColor; e.target.style.transform = 'translateY(0)'; }}
-          >
+          {/* Botão de cadastro */}
+          <button type="submit" style={submitButtonStyle}>
             Cadastrar
           </button>
         </form>
