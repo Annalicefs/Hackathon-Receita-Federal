@@ -1,63 +1,74 @@
 import React, { useState } from 'react';
-import axios from 'axios'; 
-import RegisterForm from './RegisterForm/RegisterForm';
 import api from '../services/auth'; 
 
 function RegisterFormCigarette() {
-  // Estados para os campos do formulário
   const [nome, setNome] = useState('');
   const [tipo, setTipo] = useState('');
-  const [quantidade, setQuantidade] = useState(0); // Começa com 0
+  const [quantidade, setQuantidade] = useState(0);
   const [dataApreensao, setDataApreensao] = useState('');
-
-  const [message, setMessage] = useState(''); // Para mensagens de sucesso/erro
-  const [isSuccess, setIsSuccess] = useState(false); // Para estilizar a mensagem
-
-  // Funções para lidar com as mudanças nos inputs
+  const [message, setMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false); 
+  
   const handleQuantidadeChange = (increment) => {
-    setQuantidade(prev => Math.max(0, prev + increment)); // Garante que não seja menor que 0
+    setQuantidade(prev => Math.max(0, prev + increment)); 
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Previne o comportamento padrão de recarregar a página
+    event.preventDefault(); 
 
-    // Objeto com os dados do formulário
     const dadosCigarro = {
-      nome,
-      tipo,
-      quantidade,
-      data_apreensao: dataApreensao, // Convenção de nome para backend (snake_case)
+      tipo_vape: tipo,       
+      marca: nome,      
+      modelo: "N/A",         
+      quantidade: quantidade,
+      data_apreensao: dataApreensao, 
+      // Se houver componentes, inclua-os aqui (certifique-se de que correspondem ao VapeComponenteInputSerializer)
+      // componentes_do_vape: [
+      //   { componente_id: 1, quantidade: 1 }
+      // ] 
     };
 
-    console.log('Dados do formulário:', dadosCigarro); // Para depuração
+    console.log('Dados do formulário:', dadosCigarro); 
 
-    // Simulação de envio para um backend
-    try {
-      // Se você tiver um backend real para isso, descomente as linhas abaixo
-      // e ajuste a URL e o método (POST, PUT, etc.) conforme a sua API.
-      // const response = await api.post('/cigarros-eletronicos/', dadosCigarro); // Exemplo com api autenticada
-      // ou
-      // const response = await axios.post('SUA_URL_DA_API/cigarros-eletronicos/', dadosCigarro);
+    try{
+        const response = await api.post('/vapes/', dadosCigarro); 
 
-      // Simulação de sucesso após 1 segundo
-      await new Promise(resolve => setTimeout(resolve, 1000));
+        if (response.status >= 200 && response.status < 300) {
+        setMessage('Cigarro eletrônico cadastrado com sucesso!');
+        setIsSuccess(true);
 
-      // Se a requisição for bem-sucedida
-      setMessage('Cigarro eletrônico cadastrado com sucesso!');
-      setIsSuccess(true);
+        // Limpar o formulário após o envio
+        setNome('');
+        setTipo('');
+        setQuantidade(0);
+        setDataApreensao('');
 
-      // Limpar o formulário após o envio
-      setNome('');
-      setTipo('');
-      setQuantidade(0);
-      setDataApreensao('');
-
+        } else {
+        setMessage('Erro desconhecido ao enviar solicitação.');
+        setIsSuccess(false);
+        }
     } catch (error) {
-      console.error('Erro ao cadastrar cigarro eletrônico:', error);
-      setMessage('Erro ao cadastrar cigarro eletrônico. Tente novamente.');
-      setIsSuccess(false);
+        console.error('Erro ao cadastrar cigarro eletrônico:', error.response?.data || error.message);
+        let errorMessage = 'Erro ao cadastrar cigarro eletrônico. ';
+        if (error.response && error.response.data) {
+        // Exibindo mensagens de erro de validação do backend (se houver)
+        if (error.response.data.detail) {
+            errorMessage = error.response.data.detail;
+        } else if (error.response.data.non_field_errors) {
+            errorMessage += error.response.data.non_field_errors.join(', ');
+        } else {
+            // Itera sobre os erros de campo para mostrar ao usuário
+            for (const key in error.response.data) {
+            if (error.response.data.hasOwnProperty(key)) {
+                errorMessage += `${key}: ${error.response.data[key].join(', ')}. `;
+            }
+            }
+        }
+        }
+        setMessage(errorMessage);
+        setIsSuccess(false);
     }
-  };
+};
 
   // --- Estilos para a tela ---
   const headerStyle = {

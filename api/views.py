@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 from django.utils import timezone 
 from django.db import transaction
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status, generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -19,7 +20,7 @@ from .serializers import (
     UsuarioRegistroSerializer, UsuarioSerializer, VapeSerializer,
     ComponenteSerializer, EstoqueComponenteSerializer, HistoricoEstoqueSerializer,
     InstituicaoSerializer, InstituicaoCriarSerializer,
-    RequisicaoCriarSerializer, RequisicaoDetalheSerializer, # Ajustado para usar os novos serializers
+    RequisicaoCriarSerializer, RequisicaoDetalheSerializer,
     ItemRequisicaoSerializer
 )
 from .permissions import IsReceitaFederal, IsInstituicao, IsPublicoOrAuthenticated, IsOwnerInstituicaoRequisicao
@@ -434,7 +435,21 @@ class RequisicaoViewSet(viewsets.ModelViewSet):
 class ComponenteViewSet(viewsets.ModelViewSet):
     queryset = Componente.objects.all().order_by('nome_componente')
     serializer_class = ComponenteSerializer
-    permission_classes = [IsAuthenticated, IsReceitaFederal] # Apenas Receita Federal gerencia componentes
+    filter_backends = [DjangoFilterBackend] 
+     
+    filterset_fields = {
+        'nome_componente': ['exact', 'icontains'], # Este já deve estar correto
+        'tipo_do_componente': ['exact', 'icontains'], # <<-- AJUSTE PARA O NOME REAL DO CAMPO NO MODELO
+        'modelo_do_componente': ['exact', 'icontains'], # <<-- AJUSTE PARA O NOME REAL DO CAMPO NO MODELO
+        'fabricante_do_componente': ['exact', 'icontains'], 
+    }
+    permission_classes = [IsAuthenticated, IsReceitaFederal]
+    # Apenas Receita Federal gerencia componentes
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        print(f"DEBUG: Query Params recebidos para Componente: {self.request.query_params}")
+        return queryset
 
 class HistoricoEstoqueViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = HistoricoEstoque.objects.select_related('id_componente').all().order_by('-data_movimento')

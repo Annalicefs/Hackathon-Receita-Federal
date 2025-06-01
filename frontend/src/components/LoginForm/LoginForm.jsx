@@ -6,8 +6,7 @@ function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const navigate = useNavigate(); // Hook para navegação programática
-
+    const navigate = useNavigate(); 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -16,7 +15,7 @@ function LoginForm() {
             await login(email, password); 
             setMessage('Login realizado com sucesso!');
             // Redireciona para o dashboard após login bem-sucedido
-            navigate('/dashboard'); 
+            navigate('/nossas-instituicoes'); 
         } catch (error) {
             console.error('Erro na requisição de login:', error.response?.data || error.message);
             setMessage(error.response?.data?.detail || 'Erro ao fazer login. Verifique suas credenciais.');

@@ -1,13 +1,6 @@
-// frontend/src/components/InstituicaoCadastroForm/InstituicaoCadastroForm.jsx
 import React, { useState } from 'react';
-import axios from 'axios'; // Usaremos axios para a requisição POST
 import { useNavigate } from 'react-router-dom';
-
-// Importa a instância configurada do axios (para incluir o token automaticamente)
-// Se InstituicaoCadastroForm for acessível APENAS após login, use 'api'
-// Se for acessível para usuários públicos que já fizeram cadastro de usuário, use 'api'
-// mas o backend precisa permitir o POST para users autenticados (IsAuthenticated)
-import api from '../services/auth'; // A instância de axios com interceptadores de token
+import api from '../services/auth'; 
 
 function InstituicaoCadastro() {
   const [nomeInstituicao, setNomeInstituicao] = useState('');
@@ -67,7 +60,7 @@ function InstituicaoCadastro() {
         setTelefone('');
         setEmailContato('');
         setAreaAtuacao('');
-        setAssinaturaPdfUrl(null);
+        setAssinaturaPdf(null);
         setEstatutoPdf(null); 
         setAtaEleicaoPdf(null); 
         setComprovanteEnderecoPdf(null);
@@ -84,8 +77,8 @@ function InstituicaoCadastro() {
         setIsSuccess(false);
       }
     } catch (error) {
-      console.error('Erro ao enviar solicitação de instituição:', error.response?.data || error.message);
       let errorMessage = 'Erro ao enviar solicitação. ';
+      console.error('Erro ao enviar solicitação de instituição:', error.response?.data || error.message);
       if (error.response && error.response.data) {
         // Erros de validação do DRF
         if (error.response.data.nome_instituicao) {
@@ -100,11 +93,30 @@ function InstituicaoCadastro() {
         if (error.response.data.detail) {
           errorMessage = error.response.data.detail; 
         }
+        if (typeof error.response.data === 'string') { // Adicionado para cobrir strings simples
+        errorMessage = error.response.data;
+        } else if (error.response.data.detail) { // Para erros como "Autenticação necessária"
+            errorMessage = error.response.data.detail;
+        } else if (error.response.data.non_field_errors) { // Para erros gerais do formulário
+            errorMessage += `Erros gerais: ${error.response.data.non_field_errors.join(', ')}. `;
+        } else {
+            // Itera sobre os erros de campo para mostrar ao usuário
+            for (const key in error.response.data) {
+                if (error.response.data.hasOwnProperty(key)) {
+                    // Certifica-se de que a propriedade é um array antes de usar join
+                    if (Array.isArray(error.response.data[key])) {
+                        errorMessage += `${key}: ${error.response.data[key].join(', ')}. `;
+                    } else {
+                        errorMessage += `${key}: ${error.response.data[key]}. `; // Se não for array, pode ser string
+                    }
+                }
+            }
+          }
       }
+    }
       setMessage(errorMessage);
       setIsSuccess(false);
-    }
-  };
+  }; 
 
   const pageTitleStyle = {
     fontSize: '2em',
